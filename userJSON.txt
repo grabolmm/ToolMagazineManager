@@ -1,0 +1,69 @@
+    {
+        "name": "Mariusz",
+        "surname": "Grabsztunowicz",
+        "email": "mariusz@gmail.com",
+        "phone": "500000000",
+        "department": "HT",
+        "position": "mechanical designer"
+    }
+   {
+        "name": "Anna",
+        "surname": "Nowak",
+        "email": "anna@gmail.com",
+        "phone": "600000000",
+        "department": "PR",
+        "position": "CNC programmer"
+    }
+   {
+        "name": "Miko³aj",
+        "surname": "Kowalski",
+        "email": "Miki@gmail.com",
+        "phone": "700000000",
+        "department": "PR",
+        "position": "CNC operator"
+    }
+	
+
+    {
+	"groupName": "Frez",
+        "diameter": "10",
+        "company": "PAFANA",
+        "companyCode": "123456",
+        "minMagazineQuantity": "10",
+        "magazineQuantity": "20"
+	"inUseQuantity": " ",
+	"totalQuantity": " "
+     }
+
+
+    {
+	"groupName": "Frez",
+        "diameter": "16",
+        "company": "PAFANA",
+        "companyCode": "654321",
+        "minMagazineQuantity": "10",
+        "magazineQuantity": "20"
+	"inUseQuantity": " ",
+	"totalQuantity": " "
+     }
+
+
+    {
+	"groupName": "Wiertlo",
+        "diameter": "5",
+        "company": "FANAR",
+        "companyCode": "555",
+        "minMagazineQuantity": "10",
+        "magazineQuantity": "20"
+	"inUseQuantity": " ",
+	"totalQuantity": " "
+     }
+
+	{
+	"minMagazineQuantity": "10",
+        "magazineQuantity": "20",
+	"inUseQuantity": " ",
+	"totalQuantity": " "
+	}
+
+http://localhost:8080/tool/update/4?minMagazineQuantity=3&magazineQuantity=3&inUseQuantity=3
