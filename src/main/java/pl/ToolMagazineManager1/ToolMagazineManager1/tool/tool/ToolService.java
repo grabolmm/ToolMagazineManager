@@ -1,4 +1,4 @@
-package pl.ToolMagazineManager1.ToolMagazineManager1.tool;
+package pl.ToolMagazineManager1.ToolMagazineManager1.tool.tool;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,11 +51,27 @@ public class ToolService {
     }
 
     @Transactional
-    public void buyTool (Long toolId, int magazineQuantity){
+    public void buyTool (Long toolId, int boughtQuantity){
         Tool tool = toolRepository.findById(toolId).orElseThrow(() -> new IllegalStateException (
                 "tool with id " + toolId + " does not exist"));
-        tool.setMagazineQuantity(magazineQuantity);
+        int currentMagazineQuantity = tool.getMagazineQuantity();
+        int updatedMagazineQuantity = currentMagazineQuantity + boughtQuantity;
+        tool.setMagazineQuantity(updatedMagazineQuantity);
     }
+
+        @Transactional
+    public void borrowTool (Long toolId, int borrowQuantity) {
+            Tool tool = toolRepository.findById(toolId).orElseThrow(() -> new IllegalStateException(
+                    "tool with id " + toolId + " does not exist"));
+            if (borrowQuantity != 0 && tool.getMagazineQuantity() > 0) {
+                tool.setMagazineQuantity(tool.getMagazineQuantity() - borrowQuantity);
+                tool.setInUseQuantity(tool.getInUseQuantity() + borrowQuantity);
+            } else throw new IllegalStateException("magazine quantity is not enough");
+            if (tool.getMagazineQuantity() < tool.getMinMagazineQuantity()) {
+
+                System.out.println("magazine tools quantity less than min magazine quantity - please order tools");
+            }
+        }
 
 //    @Transactional
 //    public void updateTool (Long id, Integer minMagazineQuantity, Integer magazineQuantity,

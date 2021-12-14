@@ -2,7 +2,6 @@ package pl.ToolMagazineManager1.ToolMagazineManager1.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.ToolMagazineManager1.ToolMagazineManager1.tool.Tool;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -86,9 +85,9 @@ public class UserService {
         } else throw new IllegalStateException("there is no user on " + position + " position");
     }
 
-    public List<Tool> getBorrowedTools (Long userId){
-        if (userRepository.getBorrowedTools(userId).isEmpty() == false){
-            return userRepository.getBorrowedTools(userId);
-        } else throw new IllegalStateException ("user with id " + userId + " does not has borrowed tools");
-    }
+//    public List<Tool> getBorrowedTools (Long userId){
+//        if (userRepository.getBorrowedTools(userId).isEmpty() == false){
+//            return userRepository.getBorrowedTools(userId);
+//        } else throw new IllegalStateException ("user with id " + userId + " does not has borrowed tools");
+//    }
 }

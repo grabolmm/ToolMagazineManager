@@ -1,7 +1,6 @@
 package pl.ToolMagazineManager1.ToolMagazineManager1.user;
 
 import org.springframework.web.bind.annotation.*;
-import pl.ToolMagazineManager1.ToolMagazineManager1.tool.Tool;
 
 import java.util.List;
 import java.util.Optional;
@@ -76,8 +75,8 @@ public class UserController {
         return userService.getUserByPosition(position);
     }
 
-    @GetMapping ("/getBorrowedTools/{userId}")
-    public List<Tool> getBorrowedTools(@PathVariable("userId") Long userId){
-        return userService.getBorrowedTools(userId);
-    }
+//    @GetMapping ("/getBorrowedTools/{userId}")
+//    public List<Tool> getBorrowedTools(@PathVariable("userId") Long userId){
+//        return userService.getBorrowedTools(userId);
+//    }
 }

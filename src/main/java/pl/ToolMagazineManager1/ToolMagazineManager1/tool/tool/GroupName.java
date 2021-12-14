@@ -1,4 +1,4 @@
-package pl.ToolMagazineManager1.ToolMagazineManager1.tool;
+package pl.ToolMagazineManager1.ToolMagazineManager1.tool.tool;
 
 public enum GroupName {
     MILLING_CUTTER_SOLID_CARBIDE,

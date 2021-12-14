@@ -1,10 +1,6 @@
-package pl.ToolMagazineManager1.ToolMagazineManager1.tool;
-
-import pl.ToolMagazineManager1.ToolMagazineManager1.user.User;
+package pl.ToolMagazineManager1.ToolMagazineManager1.tool.tool;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table
@@ -25,13 +21,13 @@ public class Tool {
     @Transient
     private int totalQuantity;
 
-    @ManyToMany
-    @JoinTable(
-            name = "borrowed_tools",
-            joinColumns = @JoinColumn (name = "tool_id"),
-            inverseJoinColumns = @JoinColumn (name = "user_id")
-    )
-    private List<User> toolUsers = new ArrayList<>();
+//    @ManyToMany
+//    @JoinTable(
+//            name = "borrowed_tools",
+//            joinColumns = @JoinColumn (name = "tool_id"),
+//            inverseJoinColumns = @JoinColumn (name = "user_id")
+//    )
+//    private List<User> toolUsers = new ArrayList<>();
 
 
     public Tool() {
@@ -130,11 +126,10 @@ public class Tool {
                 ", magazineQuantity=" + magazineQuantity +
                 ", inUseQuantity=" + inUseQuantity +
                 ", totalQuantity=" + totalQuantity +
-                ", toolUsers=" + toolUsers +
                 '}';
     }
 
-    public void addUser (User user){
-        toolUsers.add(user);
-    }
+//    public void addUser (User user){
+//        toolUsers.add(user);
+//    }
 }

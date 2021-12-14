@@ -1,7 +1,9 @@
-package pl.ToolMagazineManager1.ToolMagazineManager1.tool;
+package pl.ToolMagazineManager1.ToolMagazineManager1.tool.tool;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.ToolMagazineManager1.ToolMagazineManager1.tool.boughtTool.BoughtTool;
+import pl.ToolMagazineManager1.ToolMagazineManager1.tool.boughtTool.BoughtToolService;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +12,6 @@ import java.util.Optional;
 @RequestMapping("/tools")
 public class ToolController {
     private ToolService toolService;
-
-    @Autowired
-    private BoughtToolService boughtToolService;
 
     @Autowired
     public ToolController(ToolService toolService) {
@@ -43,15 +42,7 @@ public class ToolController {
         toolService.updateTool(toolId, groupName, diameter, company, companyCode);
     }
 
-    @PostMapping("/buyTool/{toolId}")
-    public void buyTool (@PathVariable("toolId") Long toolId,
-                         @RequestParam (required = false) int magazineQuantity,
-                         @RequestParam (required = false) double price,
-                         @RequestParam (required = false) String invoice){
-        BoughtTool boughtTool = new BoughtTool(toolId, magazineQuantity, price, invoice);
-        boughtToolService.addBoughtTool(boughtTool);
-        toolService.buyTool(toolId, magazineQuantity);
-    }
+
 
     @GetMapping("/findToolById/{toolId}")
     public Optional<Tool> findToolById (@PathVariable("toolId") Long toolId){

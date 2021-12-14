@@ -1,10 +1,6 @@
 package pl.ToolMagazineManager1.ToolMagazineManager1.user;
 
-import pl.ToolMagazineManager1.ToolMagazineManager1.tool.Tool;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table
@@ -21,15 +17,10 @@ public class User {
     private String department;
     private String position;
 
-    @ManyToMany(mappedBy = "toolUsers")
-    private List<Tool> borrowedTools = new ArrayList<>();
-
+//    @ManyToMany(mappedBy = "toolUsers")
+//    private List<Tool> borrowedTools = new ArrayList<>();
 
     public User() {
-    }
-
-    public User(Long id) {
-        this.id = id;
     }
 
     public User(String name, String surname, String email, String phone, String department, String position) {
@@ -41,11 +32,11 @@ public class User {
         this.position = position;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -110,7 +101,7 @@ public class User {
                 '}';
     }
 
-    public void addTool(Tool tool){
-        borrowedTools.add(tool);
-    }
+//    public void addTool(Tool tool){
+//        borrowedTools.add(tool);
+//    }
 }
