@@ -1,9 +1,7 @@
 package pl.ToolMagazineManager1.ToolMagazineManager1.tool.borrowedTool;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import pl.ToolMagazineManager1.ToolMagazineManager1.tool.boughtTool.BoughtTool;
 import pl.ToolMagazineManager1.ToolMagazineManager1.tool.tool.Tool;
 import pl.ToolMagazineManager1.ToolMagazineManager1.tool.tool.ToolService;
 import pl.ToolMagazineManager1.ToolMagazineManager1.user.User;
@@ -11,6 +9,7 @@ import pl.ToolMagazineManager1.ToolMagazineManager1.user.UserService;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/borrowedTools")
@@ -30,7 +29,7 @@ public class BorrowedToolController {
     }
 
     @PostMapping("/borrowTool/{toolId}/{userId}")
-    public void borrowTool (@PathVariable("toolId") Long toolId,
+    public void addBorrowedTool (@PathVariable("toolId") Long toolId,
                             @PathVariable("userId") Long userId,
                             @RequestParam int borrowQuantity){
         Tool tool = toolService.findToolById(toolId).orElseThrow(() -> new IllegalStateException (
@@ -50,7 +49,15 @@ public class BorrowedToolController {
 
     @GetMapping("/getBorrowedToolsByUserId/{userId}")
     public List<Tool> getBorrowedToolsByUserId (@PathVariable("userId") Long userId){
-        return borrowedToolService.getBorrowedToolsByUserId(userId);
+       Optional<User> user = userService.findUserById(userId);
+       if (user.isPresent() == true){
+           return borrowedToolService.getBorrowedToolsByUserId(user);
+       } else throw new IllegalStateException("user with id " + userId + " does not exist");
+
     }
 
+    @GetMapping("/getBorrowedToolsUsersByToolId/{toolId}")
+    public List<User> getBorrowedToolsUsersByToolId (@PathVariable("toolId") Long toolId) {
+        return borrowedToolService.getBorrowedToolsUsersByToolId(toolId);
+    }
 }

@@ -42,8 +42,6 @@ public class ToolController {
         toolService.updateTool(toolId, groupName, diameter, company, companyCode);
     }
 
-
-
     @GetMapping("/findToolById/{toolId}")
     public Optional<Tool> findToolById (@PathVariable("toolId") Long toolId){
         return toolService.findToolById(toolId);
@@ -57,6 +55,11 @@ public class ToolController {
     @GetMapping("/findToolByGroupName/{groupName}")
     public List<Tool> findToolByGroup (@PathVariable("groupName") GroupName groupName){
         return toolService.findToolByGroupName(groupName);
+    }
+
+    @GetMapping("/findToolByDiameter/{diameter}")
+    public List<Tool> findToolByDiameter (@PathVariable("diameter") String diameter){
+        return toolService.findToolByDiameter(diameter);
     }
 //
 //    @PutMapping("/borrowTool/{toolId}/{userId}")

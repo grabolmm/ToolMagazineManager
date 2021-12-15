@@ -15,12 +15,15 @@ public class BorrowedTool {
     @Column (nullable = false, updatable = false)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn (name = "user_id")
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn (name = "tool_id")
     private Tool tool;
 
+    @Transient
     private int borrowedQuantity;
     private String borrowDate;
 
@@ -33,6 +36,8 @@ public class BorrowedTool {
         this.borrowedQuantity = borrowedQuantity;
         this.borrowDate = borrowDate;
     }
+
+
 
     public Long getId() {
         return id;
@@ -80,7 +85,6 @@ public class BorrowedTool {
                 "id=" + id +
                 ", user=" + user +
                 ", tool=" + tool +
-                ", borrowedQuantity=" + borrowedQuantity +
                 ", borrowDate=" + borrowDate +
                 '}';
     }

@@ -71,23 +71,7 @@ public class ToolService {
 
                 System.out.println("magazine tools quantity less than min magazine quantity - please order tools");
             }
-        }
-
-//    @Transactional
-//    public void updateTool (Long id, Integer minMagazineQuantity, Integer magazineQuantity,
-//                            Integer inUseQuantity){
-//        Tool tool = toolRepository.findById(id).orElseThrow(() -> new IllegalStateException (
-//                "tool with id " + id + " does not exist"));
-//        if (minMagazineQuantity != null){
-//            tool.setMinMagazineQuantity(minMagazineQuantity);
-//        }
-//        if (magazineQuantity != null){
-//            tool.setMagazineQuantity(magazineQuantity);
-//        }
-//        if (inUseQuantity != null) {
-//            tool.setInUseQuantity(inUseQuantity);
-//        }
-//    }
+    }
 
     public Optional<Tool> findToolById (Long toolId){
         Tool tool = toolRepository.findById(toolId).orElseThrow(() -> new IllegalStateException (
@@ -105,6 +89,18 @@ public class ToolService {
         if (toolRepository.findToolByGroupName(groupName).isEmpty() == false){
             return toolRepository.findToolByGroupName(groupName);
         } else throw new IllegalStateException ("tool with group name " + groupName + " does not exist");
+    }
+
+    public List<Tool> findToolByDiameter(String diameter){
+        if (toolRepository.findToolByDiameter(diameter).isEmpty() == false){
+            return toolRepository.findToolByDiameter(diameter);
+        } else throw new IllegalStateException("tool with diameter " + diameter + " does not exist");
+    }
+
+    public List<Tool> findToolByCompanyCode(String companyCode){
+        if (toolRepository.findToolByCompanyCode(companyCode).isEmpty() == false){
+            return toolRepository.findToolByCompanyCode(companyCode);
+        } else throw new IllegalStateException("tool with company code " + companyCode + " does not exist");
     }
 //
 //    @Transactional
