@@ -61,22 +61,9 @@ public class ToolController {
     public List<Tool> findToolByDiameter (@PathVariable("diameter") String diameter){
         return toolService.findToolByDiameter(diameter);
     }
-//
-//    @PutMapping("/borrowTool/{toolId}/{userId}")
-//    public void borrowTool (@PathVariable("toolId") Long toolId,
-//                            @PathVariable("userId") Long userId,
-//                            @RequestParam Integer borrowQuantity){
-//        toolService.borrowTool(toolId, borrowQuantity, userId);
-//    }
-//
-//    @PutMapping("/damageUsedTools/{toolId}")
-//    public void damageUsedTools (@PathVariable("toolId") Long id, @RequestParam Integer damageUsedQuantity){
-//        toolService.damageUsedTool(id, damageUsedQuantity);
-//    }
-//
-//    @GetMapping("/getUser/{toolId}")
-//    public List<User> getUsers (@PathVariable("toolId") Long toolId){
-//        return toolService.getUsers(toolId);
-//    }
 
+    @GetMapping("/findToolByCompanyCode/{companyCode}")
+    public List<Tool> findToolByCompanyCode (@PathVariable("companyCode") String companyCode){
+        return toolService.findToolByCompanyCode(companyCode);
+    }
 }

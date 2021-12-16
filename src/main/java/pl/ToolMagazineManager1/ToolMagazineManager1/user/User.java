@@ -101,7 +101,4 @@ public class User {
                 '}';
     }
 
-//    public void addTool(Tool tool){
-//        borrowedTools.add(tool);
-//    }
 }

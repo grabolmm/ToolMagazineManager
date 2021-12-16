@@ -26,6 +26,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT e FROM User e WHERE e.position = :position")
     List<User> getUserByPosition (@Param("position") String position);
 
-//    @Query("SELECT e.borrowedTools FROM User e WHERE e.id = :userId")
-//    List<Tool> getBorrowedTools (@Param("userId") Long userId);
 }

@@ -9,7 +9,6 @@ import pl.ToolMagazineManager1.ToolMagazineManager1.user.UserService;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/borrowedTools")
@@ -42,6 +41,14 @@ public class BorrowedToolController {
         toolService.borrowTool(toolId, borrowQuantity);
     }
 
+    @DeleteMapping("/giveBackBorrowedTool/{toolId}/{userId}")
+    public void giveBackBorrowedTool (@PathVariable("toolId") Long toolId,
+                                      @PathVariable("userId") Long userId,
+                                      @RequestParam int giveBackQuantity){
+        borrowedToolService.giveBackBorrowedTool(toolId, userId, giveBackQuantity);
+        toolService.giveBackTool(toolId, giveBackQuantity);
+    }
+
     @GetMapping("/getBorrowedTools")
     public List<BorrowedTool> getBorrowedTools(){
         return borrowedToolService.getBorrowedTools();
@@ -49,15 +56,23 @@ public class BorrowedToolController {
 
     @GetMapping("/getBorrowedToolsByUserId/{userId}")
     public List<Tool> getBorrowedToolsByUserId (@PathVariable("userId") Long userId){
-       Optional<User> user = userService.findUserById(userId);
-       if (user.isPresent() == true){
-           return borrowedToolService.getBorrowedToolsByUserId(user);
-       } else throw new IllegalStateException("user with id " + userId + " does not exist");
-
+       return borrowedToolService.getBorrowedToolsByUserId(userId);
     }
 
     @GetMapping("/getBorrowedToolsUsersByToolId/{toolId}")
     public List<User> getBorrowedToolsUsersByToolId (@PathVariable("toolId") Long toolId) {
         return borrowedToolService.getBorrowedToolsUsersByToolId(toolId);
     }
+
+    @GetMapping("/findBorrowedToolByToolId/{toolId}")
+    public Tool findBorrowedToolByToolId (@PathVariable("toolId") Long toolId){
+        return borrowedToolService.findBorrowedToolByToolId(toolId);
+    }
+
+    @GetMapping("/findBorrowedToolUserByUserId/{userId}")
+    public User findBorrowedToolUserByUserId (@PathVariable("userId") Long userId){
+        return borrowedToolService.findBorrowedToolUserByUserId(userId);
+    }
+
+
 }

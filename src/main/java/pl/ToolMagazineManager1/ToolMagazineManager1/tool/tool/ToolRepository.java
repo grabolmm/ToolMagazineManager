@@ -20,7 +20,4 @@ public interface ToolRepository extends JpaRepository<Tool, Long> {
     @Query("SELECT e FROM Tool e WHERE e.companyCode LIKE :companyCode")
     List<Tool> findToolByCompanyCode(@Param("companyCode") String companyCode);
 
-
-//    @Query("SELECT DISTINCT e.toolUsers FROM Tool e WHERE e.id = :toolId")
-//    List<User> getUsers (@Param("toolId") Long toolId);
 }

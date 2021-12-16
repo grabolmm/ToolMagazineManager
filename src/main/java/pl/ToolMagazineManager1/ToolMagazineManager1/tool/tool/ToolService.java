@@ -59,7 +59,7 @@ public class ToolService {
         tool.setMagazineQuantity(updatedMagazineQuantity);
     }
 
-        @Transactional
+    @Transactional
     public void borrowTool (Long toolId, int borrowQuantity) {
             Tool tool = toolRepository.findById(toolId).orElseThrow(() -> new IllegalStateException(
                     "tool with id " + toolId + " does not exist"));
@@ -68,9 +68,20 @@ public class ToolService {
                 tool.setInUseQuantity(tool.getInUseQuantity() + borrowQuantity);
             } else throw new IllegalStateException("magazine quantity is not enough");
             if (tool.getMagazineQuantity() < tool.getMinMagazineQuantity()) {
-
-                System.out.println("magazine tools quantity less than min magazine quantity - please order tools");
+                throw new IllegalStateException("magazine tools quantity less than min magazine quantity - please order tools");
             }
+    }
+
+    @Transactional
+    public void giveBackTool (Long toolId, int giveBackQuantity){
+        Tool tool = toolRepository.findById(toolId).orElseThrow(() -> new IllegalStateException (
+                "tool with id " + toolId + " does not exist"));
+        int currentMagazineQuantity = tool.getMagazineQuantity();
+        int updatedMagazineQuantity = currentMagazineQuantity + giveBackQuantity;
+        tool.setMagazineQuantity(updatedMagazineQuantity);
+        int currentInUseQuantity = tool.getInUseQuantity();
+        int updatedInUseQuantity = currentInUseQuantity - giveBackQuantity;
+        tool.setInUseQuantity(updatedInUseQuantity);
     }
 
     public Optional<Tool> findToolById (Long toolId){
@@ -102,35 +113,5 @@ public class ToolService {
             return toolRepository.findToolByCompanyCode(companyCode);
         } else throw new IllegalStateException("tool with company code " + companyCode + " does not exist");
     }
-//
-//    @Transactional
-//    public void borrowTool (Long toolId, Integer borrowQuantity, Long userId){
-//        Tool tool = toolRepository.findById(toolId).orElseThrow(() -> new IllegalStateException (
-//                "tool with id " + toolId + " does not exist"));
-//        User user = new User(userId); // dodać wyszukiwanie usera po Id
-//        if (borrowQuantity != 0 && tool.getMagazineQuantity() > 0){
-//            tool.setMagazineQuantity(tool.getMagazineQuantity() - borrowQuantity);
-//            tool.setInUseQuantity(tool.getInUseQuantity() + borrowQuantity);
-//        } else throw new IllegalStateException ("magazine quantity is not enough");
-//        if (tool.getMagazineQuantity() < tool.getMinMagazineQuantity()) {
-//            System.out.println("magazine tools quantity less than min magazine quantity - please order tools");
-//        }
-//        for (int saveBorrowQuantity = 0; saveBorrowQuantity < borrowQuantity; saveBorrowQuantity++){
-//            tool.addUser(user);
-//            toolRepository.save(tool);
-//        }
-//    }
-//
-//    @Transactional
-//    public void damageUsedTool (Long id, Integer damageUsedQuantity){
-//        Tool tool = toolRepository.findById(id).orElseThrow(() -> new IllegalStateException (
-//                "tool with id " + id + " does not exist"));
-//        if (damageUsedQuantity !=0 && tool.getInUseQuantity() > 0 ){
-//            tool.setInUseQuantity(tool.getInUseQuantity() - damageUsedQuantity);
-//        }
-//    }
-//
-//    public List<User> getUsers (Long toolId){
-//        return toolRepository.getUsers(toolId);
-//    }
+
 }
