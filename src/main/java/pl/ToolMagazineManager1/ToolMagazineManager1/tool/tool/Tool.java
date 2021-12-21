@@ -29,7 +29,6 @@ public class Tool {
 //    )
 //    private List<User> toolUsers = new ArrayList<>();
 
-
     public Tool() {
     }
 

@@ -2,6 +2,7 @@ package pl.ToolMagazineManager1.ToolMagazineManager1.tool.borrowedTool;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.ToolMagazineManager1.ToolMagazineManager1.tool.tool.GroupName;
 import pl.ToolMagazineManager1.ToolMagazineManager1.tool.tool.Tool;
 import pl.ToolMagazineManager1.ToolMagazineManager1.user.User;
 
