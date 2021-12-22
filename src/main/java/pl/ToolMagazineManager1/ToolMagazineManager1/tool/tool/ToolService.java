@@ -63,7 +63,7 @@ public class ToolService {
     public void borrowTool (Long toolId, int borrowQuantity) {
             Tool tool = toolRepository.findById(toolId).orElseThrow(() -> new IllegalStateException(
                     "tool with id " + toolId + " does not exist"));
-            if (borrowQuantity != 0 && tool.getMagazineQuantity() > 0) {
+            if (borrowQuantity != 0 && tool.getMagazineQuantity() >= borrowQuantity) {
                 tool.setMagazineQuantity(tool.getMagazineQuantity() - borrowQuantity);
                 tool.setInUseQuantity(tool.getInUseQuantity() + borrowQuantity);
             } else throw new IllegalStateException("magazine quantity is not enough");

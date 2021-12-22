@@ -8,6 +8,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.ToolMagazineManager1.ToolMagazineManager1.user.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -120,37 +122,168 @@ class ToolServiceTest {
         given(toolRepository.findById(toolId)).willReturn(Optional.of(tool));
 
         //when
+        int expected = tool.getMagazineQuantity() + boughtQuantity;
         underTest.buyTool(toolId, boughtQuantity);
 
         //then
-        assertThat(tool.getMagazineQuantity()).isEqualTo(10);
+        assertThat(tool.getMagazineQuantity()).isEqualTo(expected);
     }
 
     @Test
-    void borrowTool() {
+    void canBorrowTool() {
+        //given
+        long toolId = 1;
+        int borrowQuantity = 10;
+        Tool tool = new Tool();
+        tool.setMagazineQuantity(10);
+        tool.setInUseQuantity(0);
+        given(toolRepository.findById(toolId)).willReturn(Optional.of(tool));
+
+        //when
+        int expectedMagazineQuantity = tool.getMagazineQuantity() - borrowQuantity;
+        int expectedInUseQuantity = tool.getInUseQuantity() + borrowQuantity;
+
+        underTest.borrowTool(toolId, borrowQuantity);
+
+        //then
+        assertThat(tool.getMagazineQuantity()).isEqualTo(expectedMagazineQuantity);
+        assertThat(tool.getInUseQuantity()).isEqualTo(expectedInUseQuantity);
     }
 
     @Test
-    void giveBackTool() {
+    void willThrownWhenMagazineQuantityIsNotEnough(){
+        //given
+        long toolId = 1;
+        int borrowQuantity = 10;
+        Tool tool = new Tool();
+        tool.setMagazineQuantity(9);
+        tool.setInUseQuantity(0);
+        given(toolRepository.findById(toolId)).willReturn(Optional.of(tool));
+
+        //when
+        //then
+        assertThatThrownBy(() -> underTest.borrowTool(toolId, borrowQuantity)).isInstanceOf(IllegalStateException.class).
+                hasMessageContaining("magazine quantity is not enough");
     }
 
     @Test
-    void findToolById() {
+    void willThrownWhenMagazineQuantityIsLessThanMinMagazineQuantity(){
+        //given
+        long toolId = 1;
+        int borrowQuantity = 10;
+        Tool tool = new Tool();
+        tool.setMinMagazineQuantity(10);
+        tool.setMagazineQuantity(10);
+        tool.setInUseQuantity(0);
+        given(toolRepository.findById(toolId)).willReturn(Optional.of(tool));
+
+        //when
+        //then
+        assertThatThrownBy(() -> underTest.borrowTool(toolId, borrowQuantity)).isInstanceOf(IllegalStateException.class).
+                hasMessageContaining("magazine tools quantity less than min magazine quantity - please order tools");
     }
 
     @Test
-    void findToolByCompany() {
+    void canGiveBackTool() {
+        //given
+        long toolId = 1;
+        int giveBackQuantity = 2;
+        Tool tool = new Tool();
+        tool.setMagazineQuantity(10);
+        tool.setInUseQuantity(10);
+        given(toolRepository.findById(toolId)).willReturn(Optional.of(tool));
+
+        //when
+        int expectedMagazineQuantity = tool.getMagazineQuantity() + giveBackQuantity;
+        int expectedInUseQuantity = tool.getInUseQuantity() - giveBackQuantity;
+
+        underTest.giveBackTool(toolId, giveBackQuantity);
+
+        //then
+        assertThat(tool.getMagazineQuantity()).isEqualTo(expectedMagazineQuantity);
+        assertThat(tool.getInUseQuantity()).isEqualTo(expectedInUseQuantity);
     }
 
     @Test
-    void findToolByGroupName() {
+    void canFindToolById() {
+        //given
+        long id = 1;
+        Tool tool = new Tool();
+        tool.setId(id);
+        given(toolRepository.findById(id)).willReturn(Optional.of(tool));
+
+        //when
+        Optional<Tool> expectedTool = underTest.findToolById(id);
+
+        //then
+        assertThat(toolRepository.findById(id)).isEqualTo(expectedTool);
     }
 
     @Test
-    void findToolByDiameter() {
+    void canFindToolByCompany() {
+        //given
+        String company = "ceratizit";
+        Tool tool = new Tool();
+        tool.setCompany(company);
+        List<Tool> toolList = new ArrayList<>();
+        toolList.add(tool);
+        given(toolRepository.findToolByCompany(company)).willReturn(toolList);
+
+        //when
+        List<Tool> expected = underTest.findToolByCompany(company);
+
+        //then
+        assertThat(toolRepository.findToolByCompany(company)).isEqualTo(expected);
     }
 
     @Test
-    void findToolByCompanyCode() {
+    void canFindToolByGroupName() {
+        //given
+        GroupName groupName = GroupName.MILLING_CUTTER_SOLID_CARBIDE;
+        Tool tool = new Tool();
+        tool.setGroupName(groupName);
+        List<Tool> toolList = new ArrayList<>();
+        toolList.add(tool);
+        given(toolRepository.findToolByGroupName(groupName)).willReturn(toolList);
+
+        //when
+        List<Tool> expected = underTest.findToolByGroupName(groupName);
+
+        //then
+        assertThat(toolRepository.findToolByGroupName(groupName)).isEqualTo(expected);
+    }
+
+    @Test
+    void canFindToolByDiameter() {
+        //given
+        String diameter = "10";
+        Tool tool = new Tool();
+        tool.setDiameter(diameter);
+        List<Tool> toolList = new ArrayList<>();
+        toolList.add(tool);
+        given(toolRepository.findToolByDiameter(diameter)).willReturn(toolList);
+
+        //when
+        List<Tool> expected = underTest.findToolByDiameter(diameter);
+
+        //then
+        assertThat(toolRepository.findToolByDiameter(diameter)).isEqualTo(expected);
+    }
+
+    @Test
+    void canFindToolByCompanyCode() {
+        //given
+        String companyCode = "123456";
+        Tool tool = new Tool();
+        tool.setCompanyCode(companyCode);
+        List<Tool> toolList = new ArrayList<>();
+        toolList.add(tool);
+        given(toolRepository.findToolByCompanyCode(companyCode)).willReturn(toolList);
+
+        //when
+        List<Tool> expected = underTest.findToolByCompanyCode(companyCode);
+
+        //then
+        assertThat(toolRepository.findToolByCompanyCode(companyCode)).isEqualTo(expected);
     }
 }

@@ -80,7 +80,7 @@ class UserServiceTest {
     }
 
     @Test
-    void willThrownWhenDeleteUserNotFound() {
+    void willThrownWhenUserToDeleteNotFound() {
         //given
         long id = 10;
         User user = new User();
