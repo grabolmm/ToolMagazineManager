@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.ToolMagazineManager1.ToolMagazineManager1.user.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +60,7 @@ class ToolServiceTest {
     }
 
     @Test
-    void deleteTool() {
+    void canDeleteTool() {
         //given
         long id = 1;
         Tool tool = new Tool();
@@ -237,6 +238,22 @@ class ToolServiceTest {
     }
 
     @Test
+    void willThrownWhenToolByCompanyNotFound() {
+        //given
+        String company = "ceratizit";
+        Tool tool = new Tool();
+        tool.setCompany(company);
+        List<Tool> toolList = new ArrayList<>();
+        toolList.add(tool);
+        given(toolRepository.findToolByCompany(company)).willReturn(Collections.emptyList());
+
+        //when
+        //then
+        assertThatThrownBy(() -> underTest.findToolByCompany(company)).isInstanceOf(IllegalStateException.class).
+                hasMessageContaining("tool with company name " + company + " does not exist");
+    }
+
+    @Test
     void canFindToolByGroupName() {
         //given
         GroupName groupName = GroupName.MILLING_CUTTER_SOLID_CARBIDE;
@@ -251,6 +268,22 @@ class ToolServiceTest {
 
         //then
         assertThat(toolRepository.findToolByGroupName(groupName)).isEqualTo(expected);
+    }
+
+    @Test
+    void willThrownWhenToolByGroupNameNotFound() {
+        //given
+        GroupName groupName = GroupName.MILLING_CUTTER_SOLID_CARBIDE;
+        Tool tool = new Tool();
+        tool.setGroupName(groupName);
+        List<Tool> toolList = new ArrayList<>();
+        toolList.add(tool);
+        given(toolRepository.findToolByGroupName(groupName)).willReturn(Collections.emptyList());
+
+        //when
+        //then
+        assertThatThrownBy(() -> underTest.findToolByGroupName(groupName)).isInstanceOf(IllegalStateException.class).
+                hasMessageContaining("tool with group name " + groupName + " does not exist");
     }
 
     @Test
@@ -271,6 +304,22 @@ class ToolServiceTest {
     }
 
     @Test
+    void willThrownWhenToolByDiameterNotFound() {
+        //given
+        String diameter = "10";
+        Tool tool = new Tool();
+        tool.setDiameter(diameter);
+        List<Tool> toolList = new ArrayList<>();
+        toolList.add(tool);
+        given(toolRepository.findToolByDiameter(diameter)).willReturn(Collections.emptyList());
+
+        //when
+        //then
+        assertThatThrownBy(() -> underTest.findToolByDiameter(diameter)).isInstanceOf(IllegalStateException.class).
+                hasMessageContaining("tool with diameter " + diameter + " does not exist");
+    }
+
+    @Test
     void canFindToolByCompanyCode() {
         //given
         String companyCode = "123456";
@@ -285,5 +334,21 @@ class ToolServiceTest {
 
         //then
         assertThat(toolRepository.findToolByCompanyCode(companyCode)).isEqualTo(expected);
+    }
+
+    @Test
+    void willThrownWhenToolByCompanyCodeNotFound() {
+        //given
+        String companyCode = "123456";
+        Tool tool = new Tool();
+        tool.setCompanyCode(companyCode);
+        List<Tool> toolList = new ArrayList<>();
+        toolList.add(tool);
+        given(toolRepository.findToolByCompanyCode(companyCode)).willReturn(Collections.emptyList());
+
+        //when
+        //then
+        assertThatThrownBy(() -> underTest.findToolByCompanyCode(companyCode)).isInstanceOf(IllegalStateException.class).
+                hasMessageContaining("tool with company code " + companyCode + " does not exist");
     }
 }
