@@ -64,7 +64,7 @@ public class BorrowedToolService {
 
     public User findBorrowedToolUserByUserId (Long userId){
         return borrowedToolRepository.findBorrowedToolUserByUserId(userId).orElseThrow(() -> new IllegalStateException (
-                "user with id \" + userId + \" does not exist, or has not borrowed tools"));
+                "user with id " + userId + " does not exist, or has not borrowed tools"));
     }
 
 

@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/borrowedTools")
 public class BorrowedToolController {
 
-    private final BorrowedToolService borrowedToolService;
+    private BorrowedToolService borrowedToolService;
 
     @Autowired
     private ToolService toolService;
