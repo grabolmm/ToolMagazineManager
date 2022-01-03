@@ -1,4 +1,4 @@
-package pl.ToolMagazineManager1.ToolMagazineManager1;
+package pl.ToolMagazineManager.ToolMagazineManager;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
