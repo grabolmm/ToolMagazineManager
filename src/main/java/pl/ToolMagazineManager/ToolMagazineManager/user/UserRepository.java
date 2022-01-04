@@ -21,9 +21,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findUserByPhone (@Param("phone") String phone);
 
     @Query("SELECT e FROM User e WHERE e.department = :department")
-    List<User> getUserByDepartment (@Param("department") String department);
+    List<User> findUserByDepartment(@Param("department") String department);
 
     @Query("SELECT e FROM User e WHERE e.position = :position")
-    List<User> getUserByPosition (@Param("position") String position);
+    List<User> findUserByPosition (@Param("position") String position);
 
 }
+

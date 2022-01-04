@@ -34,7 +34,17 @@ class BorrowedToolControllerTest {
     @BeforeEach
     void setUp() {
         underTest = new BorrowedToolController(borrowedToolService);
+    }
 
+    @Test
+    void canGetBorrowedTools() {
+        //given
+
+        //when
+        underTest.getBorrowedTools();
+
+        //then
+        verify(borrowedToolService).getBorrowedTools();
     }
 
     @Test
@@ -66,6 +76,7 @@ class BorrowedToolControllerTest {
     }
 
     @Test
+    @Disabled
     void canGiveBackBorrowedTool() {
         //given
         Tool tool = new Tool();
@@ -92,22 +103,62 @@ class BorrowedToolControllerTest {
     }
 
     @Test
-    void getBorrowedTools() {
+    void canFindBorrowedToolsByUserId() {
+        //given
+        long userId = 1;
+
+        //when
+        underTest.findBorrowedToolsByUserId(userId);
+
+        //then
+        verify(borrowedToolService).findBorrowedToolsByUserId(userId);
     }
 
     @Test
-    void getBorrowedToolsByUserId() {
+    void canFindBorrowedToolsUsersByToolId() {
+        //given
+        long toolId = 1;
+
+        //when
+        underTest.findBorrowedToolsUsersByToolId(toolId);
+
+        //then
+        verify(borrowedToolService).findBorrowedToolsUsersByToolId(toolId);
     }
 
     @Test
-    void getBorrowedToolsUsersByToolId() {
+    void canFindBorrowedToolByToolId() {
+        //given
+        long toolId = 1;
+
+        //when
+        underTest.findBorrowedToolByToolId(toolId);
+
+        //then
+        verify(borrowedToolService).findBorrowedToolByToolId(toolId);
     }
 
     @Test
-    void findBorrowedToolByToolId() {
+    void canFindBorrowedToolUserByUserId() {
+        //given
+        long userId = 1;
+
+        //when
+        underTest.findBorrowedToolUserByUserId(userId);
+
+        //then
+        verify(borrowedToolService).findBorrowedToolUserByUserId(userId);
     }
 
     @Test
-    void findBorrowedToolUserByUserId() {
+    void canFindBorrowedToolsByBorrowDate() {
+        //given
+        String borrowDate = LocalDate.now().toString();
+
+        //when
+        underTest.findBorrowedToolsByBorrowDate(borrowDate);
+
+        //then
+        verify(borrowedToolService).findBorrowedToolsByBorrowDate(borrowDate);
     }
 }

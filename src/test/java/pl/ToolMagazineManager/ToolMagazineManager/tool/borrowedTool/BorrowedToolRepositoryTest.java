@@ -43,12 +43,12 @@ class BorrowedToolRepositoryTest {
     }
 
     @Test
-    void canGetBorrowedToolsByUserId() {
+    void canFindBorrowedToolsByUserId() {
         //given
         long userId = user.getId();
 
         //when
-        List<Tool> list = underTest.getBorrowedToolsByUserId(userId);
+        List<Tool> list = underTest.findBorrowedToolsByUserId(userId);
         boolean expected = list.contains(tool);
 
         //then
@@ -56,12 +56,12 @@ class BorrowedToolRepositoryTest {
     }
 
     @Test
-    void canGetBorrowedToolsUsersByToolId() {
+    void canFindBorrowedToolsUsersByToolId() {
         //given
         long toolId = tool.getId();
 
         //when
-        List<User> list = underTest.getBorrowedToolsUsersByToolId(toolId);
+        List<User> list = underTest.findBorrowedToolsUsersByToolId(toolId);
         boolean expected = list.contains(user);
 
         //then
@@ -69,13 +69,13 @@ class BorrowedToolRepositoryTest {
     }
 
     @Test
-    void canGetBorrowedToolsByToolIdAndUserId() {
+    void canFindBorrowedToolsByToolIdAndUserId() {
         //given
         long toolId = tool.getId();
         long userId = user.getId();
 
         //when
-        List<Tool> list = underTest.getBorrowedToolsByToolIdAndUserId(toolId, userId);
+        List<Tool> list = underTest.findBorrowedToolsByToolIdAndUserId(toolId, userId);
         boolean expected = list.contains(tool);
 
         //then
@@ -95,7 +95,7 @@ class BorrowedToolRepositoryTest {
     }
 
     @Test
-    void findBorrowedToolUserByUserId() {
+    void canFindBorrowedToolUserByUserId() {
         //given
         long userId = user.getId();
 
@@ -104,5 +104,18 @@ class BorrowedToolRepositoryTest {
 
         //then
         assertThat(expectedUser).isEqualTo(Optional.of(user));
+    }
+
+    @Test
+    void canFindBorrowedToolsByBorrowDate() {
+        //given
+        String borrowDate = borrowedTool.getBorrowDate();
+
+        //when
+        List<Tool> list = underTest.findBorrowedToolsByBorrowDate(borrowDate);
+        boolean expected = list.contains(borrowedTool.getTool());
+
+        //then
+        assertThat(expected).isTrue();
     }
 }

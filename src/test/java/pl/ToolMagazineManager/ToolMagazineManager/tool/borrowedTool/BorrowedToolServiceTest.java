@@ -78,7 +78,7 @@ class BorrowedToolServiceTest {
         toolList.add(tool);
         given(borrowedToolRepository.findBorrowedToolUserByUserId(user.getId())).willReturn(Optional.of(user));
         given(borrowedToolRepository.findBorrowedToolByToolId(tool.getId())).willReturn(Optional.of(tool));
-        given(borrowedToolRepository.getBorrowedToolsByToolIdAndUserId(tool.getId(), user.getId())).willReturn(toolList);
+        given(borrowedToolRepository.findBorrowedToolsByToolIdAndUserId(tool.getId(), user.getId())).willReturn(toolList);
 
         //when
         underTest.giveBackBorrowedTool(tool.getId(), user.getId(), giveBackQuantity);
@@ -104,7 +104,7 @@ class BorrowedToolServiceTest {
         toolList.add(tool);
         given(borrowedToolRepository.findBorrowedToolUserByUserId(user.getId())).willReturn(Optional.of(user));
         given(borrowedToolRepository.findBorrowedToolByToolId(tool.getId())).willReturn(Optional.of(tool));
-        given(borrowedToolRepository.getBorrowedToolsByToolIdAndUserId(tool.getId(), user.getId())).willReturn(toolList);
+        given(borrowedToolRepository.findBorrowedToolsByToolIdAndUserId(tool.getId(), user.getId())).willReturn(toolList);
 
         //when
         //then
@@ -127,10 +127,10 @@ class BorrowedToolServiceTest {
         given(borrowedToolRepository.findBorrowedToolUserByUserId(userId)).willReturn(Optional.of(user));
 
         //when
-        underTest.getBorrowedToolsByUserId(userId);
+        underTest.findBorrowedToolsByUserId(userId);
 
         //then
-        verify(borrowedToolRepository).getBorrowedToolsByUserId(userId);
+        verify(borrowedToolRepository).findBorrowedToolsByUserId(userId);
     }
 
     @Test
@@ -147,24 +147,50 @@ class BorrowedToolServiceTest {
         given(borrowedToolRepository.findBorrowedToolByToolId(toolId)).willReturn(Optional.of(tool));
 
         //when
-        underTest.getBorrowedToolsUsersByToolId(toolId);
+        underTest.findBorrowedToolsUsersByToolId(toolId);
 
         //then
-        verify(borrowedToolRepository).getBorrowedToolsUsersByToolId(toolId);
+        verify(borrowedToolRepository).findBorrowedToolsUsersByToolId(toolId);
+    }
+
+    @Test
+    void canFindBorrowedToolsByBorrowDate() {
+        //given
+        long toolId = 1;
+        Tool tool = new Tool();
+        tool.setId(toolId);
+
+        long userId = 1;
+        User user = new User();
+        user.setId(userId);
+
+        BorrowedTool borrowedTool = new BorrowedTool(user, tool, 1, LocalDate.now().toString());
+        List<Tool> toolList = new ArrayList<>();
+        toolList.add(tool);
+        String borrowDate = borrowedTool.getBorrowDate();
+        given(borrowedToolRepository.findBorrowedToolsByBorrowDate(borrowDate)).willReturn(toolList);
+
+        //when
+        underTest.findBorrowedToolsByBorrowDate(borrowDate);
+
+        //then
+        verify(borrowedToolRepository).findBorrowedToolsByBorrowDate(borrowDate);
     }
 
     @Test
     @Disabled
-    void getBorrowedToolsByToolIdAndUserId() {
+    void canFindBorrowedToolsByToolIdAndUserId() {
     }
 
     @Test
     @Disabled
-    void findBorrowedToolByToolId() {
+    void canFindBorrowedToolByToolId() {
     }
 
     @Test
     @Disabled
-    void findBorrowedToolUserByUserId() {
+    void canFindBorrowedToolUserByUserId() {
     }
+
+
 }

@@ -83,11 +83,11 @@ class UserRepositoryTest {
     }
 
     @Test
-    void canGetUserByDepartment() {
+    void canFindUserByDepartment() {
         String department = "R&D";
 
         //when
-        List<User> list = underTest.getUserByDepartment(department);
+        List<User> list = underTest.findUserByDepartment(department);
         boolean expected = list.contains(user);
 
         //then
@@ -95,11 +95,11 @@ class UserRepositoryTest {
     }
 
     @Test
-    void canGetUserByPosition() {
+    void canFindUserByPosition() {
         String position = "mechanical designer";
 
         //when
-        List<User> list = underTest.getUserByPosition(position);
+        List<User> list = underTest.findUserByPosition(position);
         boolean expected = list.contains(user);
 
         //then

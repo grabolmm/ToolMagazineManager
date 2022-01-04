@@ -73,21 +73,15 @@ public class UserService {
         } else throw new IllegalStateException("user with phone " + phone + " does not exist");
     }
 
-    public List<User> getUserByDepartment (String department){
-        if (userRepository.getUserByDepartment(department).isEmpty() == false){
-            return userRepository.getUserByDepartment(department);
+    public List<User> findUserByDepartment (String department){
+        if (userRepository.findUserByDepartment(department).isEmpty() == false){
+            return userRepository.findUserByDepartment(department);
         } else throw new IllegalStateException("there is no user from " + department + " department");
     }
 
-    public List<User> getUserByPosition (String position){
-        if (userRepository.getUserByPosition(position).isEmpty() == false){
-            return userRepository.getUserByPosition(position);
+    public List<User> findUserByPosition (String position){
+        if (userRepository.findUserByPosition(position).isEmpty() == false){
+            return userRepository.findUserByPosition(position);
         } else throw new IllegalStateException("there is no user on " + position + " position");
     }
-
-//    public List<Tool> getBorrowedTools (Long userId){
-//        if (userRepository.getBorrowedTools(userId).isEmpty() == false){
-//            return userRepository.getBorrowedTools(userId);
-//        } else throw new IllegalStateException ("user with id " + userId + " does not has borrowed tools");
-//    }
 }

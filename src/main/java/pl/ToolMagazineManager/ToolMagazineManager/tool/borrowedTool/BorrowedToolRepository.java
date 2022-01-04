@@ -12,18 +12,21 @@ import java.util.Optional;
 public interface BorrowedToolRepository extends JpaRepository<BorrowedTool, Long> {
 
     @Query("SELECT e.tool FROM BorrowedTool e WHERE e.user.id = :userId")
-    List<Tool> getBorrowedToolsByUserId (@Param("userId") Long userId);
+    List<Tool> findBorrowedToolsByUserId(@Param("userId") Long userId);
 
     @Query("SELECT e.user FROM BorrowedTool e WHERE e.tool.id = :toolId")
-    List<User> getBorrowedToolsUsersByToolId (@Param("toolId") Long toolId);
+    List<User> findBorrowedToolsUsersByToolId(@Param("toolId") Long toolId);
 
     @Query("SELECT e.tool FROM BorrowedTool e WHERE e.tool.id = :toolId AND e.user.id = :userId")
-    List<Tool> getBorrowedToolsByToolIdAndUserId (@Param("toolId") Long toolId, @Param("userId") Long userId);
+    List<Tool> findBorrowedToolsByToolIdAndUserId(@Param("toolId") Long toolId, @Param("userId") Long userId);
 
     @Query("SELECT e.tool FROM BorrowedTool e WHERE e.tool.id = :toolId")
     Optional<Tool> findBorrowedToolByToolId (@Param("toolId") Long toolId);
 
     @Query("SELECT e.user FROM BorrowedTool e WHERE e.user.id = :userId")
     Optional<User> findBorrowedToolUserByUserId (@Param("userId") Long userId);
+
+    @Query("SELECT e.tool FROM BorrowedTool e WHERE e.borrowDate = :borrowDate")
+    List<Tool> findBorrowedToolsByBorrowDate(@Param("borrowDate") String borrowDate);
 }
 

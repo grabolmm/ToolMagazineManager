@@ -55,13 +55,13 @@ public class BorrowedToolController {
     }
 
     @GetMapping("/getBorrowedToolsByUserId/{userId}")
-    public List<Tool> getBorrowedToolsByUserId (@PathVariable("userId") Long userId){
-       return borrowedToolService.getBorrowedToolsByUserId(userId);
+    public List<Tool> findBorrowedToolsByUserId(@PathVariable("userId") Long userId){
+       return borrowedToolService.findBorrowedToolsByUserId(userId);
     }
 
     @GetMapping("/getBorrowedToolsUsersByToolId/{toolId}")
-    public List<User> getBorrowedToolsUsersByToolId (@PathVariable("toolId") Long toolId) {
-        return borrowedToolService.getBorrowedToolsUsersByToolId(toolId);
+    public List<User> findBorrowedToolsUsersByToolId(@PathVariable("toolId") Long toolId) {
+        return borrowedToolService.findBorrowedToolsUsersByToolId(toolId);
     }
 
     @GetMapping("/findBorrowedToolByToolId/{toolId}")
@@ -72,6 +72,11 @@ public class BorrowedToolController {
     @GetMapping("/findBorrowedToolUserByUserId/{userId}")
     public User findBorrowedToolUserByUserId (@PathVariable("userId") Long userId){
         return borrowedToolService.findBorrowedToolUserByUserId(userId);
+    }
+
+    @GetMapping("/findBorrowedToolsByBorrowDate/{borrowedDate}")
+    public List<Tool> findBorrowedToolsByBorrowDate (@PathVariable("borrowedDate") String borrowDate){
+        return borrowedToolService.findBorrowedToolsByBorrowDate(borrowDate);
     }
 
 

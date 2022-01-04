@@ -39,4 +39,19 @@ public class BoughtToolController {
         boughtToolService.addBoughtTool(boughtTool);
         toolService.buyTool(toolId, boughtQuantity);
     }
+
+    @GetMapping("/findBoughtToolByToolId/{toolId}")
+    public List<Tool> findBoughtToolByToolId (@PathVariable("toolId") Long toolId){
+        return boughtToolService.findBoughtToolsByToolId(toolId);
+    }
+
+    @GetMapping("/findBoughtToolByInvoice/{invoice}")
+    public List<Tool> findBoughtToolByInvoice (@PathVariable("invoice") String invoice){
+        return boughtToolService.findBoughtToolsByInvoice(invoice);
+    }
+
+    @GetMapping("/findBoughtToolByBoughtDate/{boughtDate}")
+    public List<Tool> findBoughtToolByBoughtDate (@PathVariable("boughtDate") String boughtDate){
+        return boughtToolService.findBoughtToolsByInvoice(boughtDate);
+    }
 }

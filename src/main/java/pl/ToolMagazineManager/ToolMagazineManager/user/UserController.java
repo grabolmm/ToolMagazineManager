@@ -29,7 +29,7 @@ public class UserController {
         userService.deleteUser(userId);
     }
 
-    @PutMapping ("updateUser/{userId}")
+    @PutMapping ("/updateUser/{userId}")
     public void updateUser (@PathVariable("userId") Long userId,
                             @RequestParam (required = false) String name,
                             @RequestParam (required = false) String surname,
@@ -60,23 +60,18 @@ public class UserController {
         return userService.findUserByEmail(email);
     }
 
-    @GetMapping ("findUserByPhone/{phone}")
+    @GetMapping ("/findUserByPhone/{phone}")
     public List <User> findUserByPhone (@PathVariable("phone") String phone){
         return  userService.findUserByPhone(phone);
     }
 
-    @GetMapping ("getUserByDepartment/{department}")
-    public List<User> getUserByDepartment (@PathVariable("department") String department){
-        return userService.getUserByDepartment(department);
+    @GetMapping ("/findUserByDepartment/{department}")
+    public List<User> findUserByDepartment (@PathVariable("department") String department){
+        return userService.findUserByDepartment(department);
     }
 
-    @GetMapping ("getUserByPosition/{position}")
-    public List<User> getUserByPosition (@PathVariable("position") String position){
-        return userService.getUserByPosition(position);
+    @GetMapping ("/findUserByPosition/{position}")
+    public List<User> findUserByPosition (@PathVariable("position") String position){
+        return userService.findUserByPosition(position);
     }
-
-//    @GetMapping ("/getBorrowedTools/{userId}")
-//    public List<Tool> getBorrowedTools(@PathVariable("userId") Long userId){
-//        return userService.getBorrowedTools(userId);
-//    }
 }

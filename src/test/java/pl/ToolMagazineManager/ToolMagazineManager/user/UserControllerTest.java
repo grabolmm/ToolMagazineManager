@@ -132,13 +132,13 @@ class UserControllerTest {
     }
 
     @Test
-    void canGetUserByDepartment() {
+    void canFindUserByDepartment() {
         //given
         String department = "R&D";
         //when
-        underTest.getUserByDepartment(department);
+        underTest.findUserByDepartment(department);
         //then
-        verify(userService).getUserByDepartment(department);
+        verify(userService).findUserByDepartment(department);
     }
 
     @Test
@@ -146,8 +146,8 @@ class UserControllerTest {
         //given
         String position = "mechanical designer";
         //when
-        underTest.getUserByPosition(position);
+        underTest.findUserByPosition(position);
         //then
-        verify(userService).getUserByPosition(position);
+        verify(userService).findUserByPosition(position);
     }
 }

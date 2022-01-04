@@ -2,6 +2,7 @@ package pl.ToolMagazineManager.ToolMagazineManager.tool.borrowedTool;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.ToolMagazineManager.ToolMagazineManager.tool.boughtTool.BoughtTool;
 import pl.ToolMagazineManager.ToolMagazineManager.tool.tool.Tool;
 import pl.ToolMagazineManager.ToolMagazineManager.user.User;
 
@@ -29,7 +30,7 @@ public class BorrowedToolService {
     }
 
     public void giveBackBorrowedTool (Long toolId, Long userId, int giveBackQuantity){
-        List<Tool> usersBorrowedTool = getBorrowedToolsByToolIdAndUserId(toolId, userId);
+        List<Tool> usersBorrowedTool = findBorrowedToolsByToolIdAndUserId(toolId, userId);
         if (usersBorrowedTool.size() >= giveBackQuantity){
             for(int k = 0; k < giveBackQuantity; k++){
                 Tool toolToGiveBack = usersBorrowedTool.get(k);
@@ -38,22 +39,21 @@ public class BorrowedToolService {
         } else throw new IllegalStateException("user do not has enough borrowed tools to give it back");
     }
 
-    public List<Tool> getBorrowedToolsByUserId (Long userId){
+    public List<Tool> findBorrowedToolsByUserId(Long userId){
         findBorrowedToolUserByUserId(userId);
-        return borrowedToolRepository.getBorrowedToolsByUserId(userId);
+        return borrowedToolRepository.findBorrowedToolsByUserId(userId);
     }
 
-    public List<User> getBorrowedToolsUsersByToolId (Long toolId){
+    public List<User> findBorrowedToolsUsersByToolId(Long toolId){
         findBorrowedToolByToolId(toolId);
-        return borrowedToolRepository.getBorrowedToolsUsersByToolId(toolId);
+        return borrowedToolRepository.findBorrowedToolsUsersByToolId(toolId);
     }
 
-    public List<Tool> getBorrowedToolsByToolIdAndUserId (Long toolId, Long userId){
+    public List<Tool> findBorrowedToolsByToolIdAndUserId(Long toolId, Long userId){
         findBorrowedToolUserByUserId(userId);
         findBorrowedToolByToolId(toolId);
-        return borrowedToolRepository.getBorrowedToolsByToolIdAndUserId(toolId, userId);
+        return borrowedToolRepository.findBorrowedToolsByToolIdAndUserId(toolId, userId);
     }
-
 
     public Tool findBorrowedToolByToolId (Long toolId){
         return borrowedToolRepository.findBorrowedToolByToolId(toolId).orElseThrow(() -> new IllegalStateException (
@@ -65,8 +65,10 @@ public class BorrowedToolService {
                 "user with id " + userId + " does not exist, or has not borrowed tools"));
     }
 
-
-
-
-
+    public List<Tool> findBorrowedToolsByBorrowDate (String borrowDate){
+        List<Tool> borrowedToolsList = borrowedToolRepository.findBorrowedToolsByBorrowDate(borrowDate);
+        if (borrowedToolsList.isEmpty()){
+            throw new IllegalStateException("there was no actions on date: " + borrowDate);
+        } else return borrowedToolsList;
+    }
 }

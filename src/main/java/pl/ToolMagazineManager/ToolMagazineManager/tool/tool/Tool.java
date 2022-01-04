@@ -21,14 +21,6 @@ public class Tool {
     @Transient
     private int totalQuantity;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "borrowed_tools",
-//            joinColumns = @JoinColumn (name = "tool_id"),
-//            inverseJoinColumns = @JoinColumn (name = "user_id")
-//    )
-//    private List<User> toolUsers = new ArrayList<>();
-
     public Tool() {
     }
 
@@ -127,8 +119,4 @@ public class Tool {
                 ", totalQuantity=" + totalQuantity +
                 '}';
     }
-
-//    public void addUser (User user){
-//        toolUsers.add(user);
-//    }
 }

@@ -317,7 +317,7 @@ class UserServiceTest {
     }
 
     @Test
-    void canGetUserByDepartment() {
+    void canFindUserByDepartment() {
         //given
         String department = "R&D";
         User user = new User(
@@ -329,13 +329,13 @@ class UserServiceTest {
                 "mechanical designer");
         List<User> userList = new ArrayList<>();
         userList.add(user);
-        given(userRepository.getUserByDepartment(department)).willReturn(userList);
+        given(userRepository.findUserByDepartment(department)).willReturn(userList);
 
         //when
-        List<User> expected = underTest.getUserByDepartment(department);
+        List<User> expected = underTest.findUserByDepartment(department);
 
         //then
-        assertThat(userRepository.getUserByDepartment(department)).isEqualTo(expected);
+        assertThat(userRepository.findUserByDepartment(department)).isEqualTo(expected);
     }
 
     @Test
@@ -351,18 +351,18 @@ class UserServiceTest {
                 "mechanical designer");
         List<User> userList = new ArrayList<>();
         userList.add(user);
-        given(userRepository.getUserByDepartment(department)).willReturn(Collections.emptyList());
+        given(userRepository.findUserByDepartment(department)).willReturn(Collections.emptyList());
 
         //when
         //then
 
-        assertThatThrownBy(() -> underTest.getUserByDepartment(department)).isInstanceOf(IllegalStateException.class).
+        assertThatThrownBy(() -> underTest.findUserByDepartment(department)).isInstanceOf(IllegalStateException.class).
                 hasMessageContaining("there is no user from " + department + " department");
 
     }
 
     @Test
-    void canGetUserByPosition() {
+    void canFindUserByPosition() {
         //given
         String position = "mechanical designer";
         User user = new User(
@@ -374,13 +374,13 @@ class UserServiceTest {
                 position);
         List<User> userList = new ArrayList<>();
         userList.add(user);
-        given(userRepository.getUserByPosition(position)).willReturn(userList);
+        given(userRepository.findUserByPosition(position)).willReturn(userList);
 
         //when
-        List<User> expected = underTest.getUserByPosition(position);
+        List<User> expected = underTest.findUserByPosition(position);
 
         //then
-        assertThat(userRepository.getUserByPosition(position)).isEqualTo(expected);
+        assertThat(userRepository.findUserByPosition(position)).isEqualTo(expected);
     }
 
     @Test
@@ -396,12 +396,12 @@ class UserServiceTest {
                 position);
         List<User> userList = new ArrayList<>();
         userList.add(user);
-        given(userRepository.getUserByPosition(position)).willReturn(Collections.emptyList());
+        given(userRepository.findUserByPosition(position)).willReturn(Collections.emptyList());
 
         //when
         //then
 
-        assertThatThrownBy(() -> underTest.getUserByPosition(position)).isInstanceOf(IllegalStateException.class).
+        assertThatThrownBy(() -> underTest.findUserByPosition(position)).isInstanceOf(IllegalStateException.class).
                 hasMessageContaining("there is no user on " + position + " position");
 
     }

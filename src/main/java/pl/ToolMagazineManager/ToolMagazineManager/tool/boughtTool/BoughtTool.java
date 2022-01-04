@@ -14,8 +14,8 @@ public class BoughtTool {
     @Column (nullable = false, updatable = false)
     private Long id;
 
-    @OneToOne
-    @NonNull
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn (name = "tool_id")
     private Tool tool;
 
     private int boughtQuantity;
