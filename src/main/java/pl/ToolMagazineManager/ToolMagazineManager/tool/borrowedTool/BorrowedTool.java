@@ -1,5 +1,6 @@
 package pl.ToolMagazineManager.ToolMagazineManager.tool.borrowedTool;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import pl.ToolMagazineManager.ToolMagazineManager.tool.tool.Tool;
 import pl.ToolMagazineManager.ToolMagazineManager.user.User;
 
@@ -15,15 +16,18 @@ public class BorrowedTool {
     @Column (nullable = false, updatable = false)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn (name = "user_id")
+//    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
+//    @JoinColumn (name = "user_id")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn (name = "tool_id")
+//    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
+//    @JoinColumn (name = "tool_id")
     private Tool tool;
 
     @Transient
+    @JsonIgnore
     private int borrowedQuantity;
     private String borrowDate;
 

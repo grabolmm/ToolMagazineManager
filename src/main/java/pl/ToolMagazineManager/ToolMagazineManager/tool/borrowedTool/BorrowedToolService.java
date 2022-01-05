@@ -4,14 +4,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.ToolMagazineManager.ToolMagazineManager.tool.boughtTool.BoughtTool;
 import pl.ToolMagazineManager.ToolMagazineManager.tool.tool.Tool;
+import pl.ToolMagazineManager.ToolMagazineManager.tool.tool.ToolRepository;
+import pl.ToolMagazineManager.ToolMagazineManager.tool.tool.ToolService;
 import pl.ToolMagazineManager.ToolMagazineManager.user.User;
+import pl.ToolMagazineManager.ToolMagazineManager.user.UserService;
 
+import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class BorrowedToolService {
 
     private final BorrowedToolRepository borrowedToolRepository;
+
+    @Autowired
+    private ToolService toolService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public BorrowedToolService(BorrowedToolRepository borrowedToolRepository) {
@@ -22,11 +33,18 @@ public class BorrowedToolService {
         return borrowedToolRepository.findAll();
     }
 
-    public void addBorrowedTool (BorrowedTool borrowedTool){
-        int borrowQuantity = borrowedTool.getBorrowedQuantity();
+    public void addBorrowedTool (Long toolId, Long userId, int borrowQuantity){
+        String borrowDate = LocalDate.now().toString();
+        Tool tool = toolService.findToolById(toolId).orElseThrow(() -> new IllegalStateException (
+                "tool with id " + toolId + " does not exist"));
+        User user = userService.findUserById(userId).orElseThrow(() -> new IllegalStateException (
+                "tool with id " + userId + " does not exist"));
+
         for (int saveBorrowQuantity = 0; saveBorrowQuantity < borrowQuantity; saveBorrowQuantity++){
-            borrowedToolRepository.save(borrowedTool);
+            BorrowedTool borrowedToolToSave = new BorrowedTool(user, tool, borrowQuantity, borrowDate);
+            borrowedToolRepository.save(borrowedToolToSave);
         }
+        toolService.borrowTool(toolId, borrowQuantity);
     }
 
     public void giveBackBorrowedTool (Long toolId, Long userId, int giveBackQuantity){
@@ -70,5 +88,9 @@ public class BorrowedToolService {
         if (borrowedToolsList.isEmpty()){
             throw new IllegalStateException("there was no actions on date: " + borrowDate);
         } else return borrowedToolsList;
+    }
+
+    public void testMethod (){
+
     }
 }

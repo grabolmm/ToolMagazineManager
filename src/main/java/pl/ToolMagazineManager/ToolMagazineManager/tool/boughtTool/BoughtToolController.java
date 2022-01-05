@@ -52,6 +52,6 @@ public class BoughtToolController {
 
     @GetMapping("/findBoughtToolByBoughtDate/{boughtDate}")
     public List<Tool> findBoughtToolByBoughtDate (@PathVariable("boughtDate") String boughtDate){
-        return boughtToolService.findBoughtToolsByInvoice(boughtDate);
+        return boughtToolService.findBoughtToolsByBoughtDate(boughtDate);
     }
 }
