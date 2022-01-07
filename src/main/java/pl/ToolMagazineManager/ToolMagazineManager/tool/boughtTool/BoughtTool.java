@@ -27,12 +27,11 @@ public class BoughtTool {
 
     }
 
-    public BoughtTool(Tool tool, int boughtQuantity, double price, String invoice, String boughtDate) {
+    public BoughtTool(Tool tool, int boughtQuantity, double price, String invoice) {
         this.tool = tool;
         this.boughtQuantity = boughtQuantity ;
         this.price = price;
         this.invoice = invoice;
-        this.boughtDate = boughtDate;
 
     }
 

@@ -14,8 +14,6 @@ public class BoughtToolController {
 
     private final BoughtToolService boughtToolService;
 
-    @Autowired
-    private ToolService toolService;
 
     @Autowired
     public BoughtToolController(BoughtToolService boughtToolService) {
@@ -32,12 +30,7 @@ public class BoughtToolController {
                          @RequestParam (required = true) int boughtQuantity,
                          @RequestParam (required = true) double price,
                          @RequestParam (required = true) String invoice){
-        Tool tool = toolService.findToolById(toolId).orElseThrow(() -> new IllegalStateException (
-                "tool with id " + toolId + " does not exist"));
-        String boughtDate = LocalDate.now().toString();
-        BoughtTool boughtTool = new BoughtTool(tool, boughtQuantity, price, invoice, boughtDate);
-        boughtToolService.addBoughtTool(boughtTool);
-        toolService.buyTool(toolId, boughtQuantity);
+        boughtToolService.addBoughtTool(toolId, boughtQuantity, price, invoice);
     }
 
     @GetMapping("/findBoughtToolByToolId/{toolId}")

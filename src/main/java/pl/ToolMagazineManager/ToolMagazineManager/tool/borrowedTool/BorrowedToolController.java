@@ -17,22 +17,15 @@ public class BorrowedToolController {
     private BorrowedToolService borrowedToolService;
 
     @Autowired
-    private ToolService toolService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
     public BorrowedToolController(BorrowedToolService borrowedToolService) {
         this.borrowedToolService = borrowedToolService;
     }
 
     @PostMapping("/borrowTool/{toolId}/{userId}")
     public void addBorrowedTool (@PathVariable("toolId") Long toolId,
-                            @PathVariable("userId") Long userId,
-                            @RequestParam Integer borrowQuantity){
+                                 @PathVariable("userId") Long userId,
+                                 @RequestParam Integer borrowQuantity){
         borrowedToolService.addBorrowedTool(toolId, userId, borrowQuantity);
-//        toolService.borrowTool(toolId, borrowQuantity);
     }
 
     @DeleteMapping("/giveBackBorrowedTool/{toolId}/{userId}")
@@ -40,7 +33,6 @@ public class BorrowedToolController {
                                       @PathVariable("userId") Long userId,
                                       @RequestParam int giveBackQuantity){
         borrowedToolService.giveBackBorrowedTool(toolId, userId, giveBackQuantity);
-        toolService.giveBackTool(toolId, giveBackQuantity);
     }
 
 
@@ -49,14 +41,20 @@ public class BorrowedToolController {
         return borrowedToolService.getBorrowedTools();
     }
 
-    @GetMapping("/getBorrowedToolsByUserId/{userId}")
+    @GetMapping("/findBorrowedToolsByUserId/{userId}")
     public List<Tool> findBorrowedToolsByUserId(@PathVariable("userId") Long userId){
        return borrowedToolService.findBorrowedToolsByUserId(userId);
     }
 
-    @GetMapping("/getBorrowedToolsUsersByToolId/{toolId}")
+    @GetMapping("/findBorrowedToolsUsersByToolId/{toolId}")
     public List<User> findBorrowedToolsUsersByToolId(@PathVariable("toolId") Long toolId) {
         return borrowedToolService.findBorrowedToolsUsersByToolId(toolId);
+    }
+
+    @GetMapping("/findBorrowedToolsByToolIdAndUserId/{toolId}/{userId}")
+    public List<BorrowedTool> findBorrowedToolsByToolIdAndUserId (@PathVariable("toolId") Long toolId,
+                                                                  @PathVariable("userId") Long userId){
+        return  borrowedToolService.findBorrowedToolsByToolIdAndUserId(toolId, userId);
     }
 
     @GetMapping("/findBorrowedToolByToolId/{toolId}")

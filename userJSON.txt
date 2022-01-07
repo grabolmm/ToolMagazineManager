@@ -58,6 +58,35 @@
 	"inUseQuantity": " ",
 	"totalQuantity": " "
      }
+                
+	{
+        "tool":
+	  {
+	"id": "1"
+	"groupName": "Frez",
+        "diameter": "16",
+        "company": "PAFANA",
+        "companyCode": "654321",
+        "minMagazineQuantity": "10",
+        "magazineQuantity": "20"
+	"inUseQuantity": " ",
+	"totalQuantity": " "
+     	}
+        "price": "15.0",
+        "invoice": "AAA"
+        }
+
+    {
+	"id": "1"
+	"groupName": "Frez",
+        "diameter": "16",
+        "company": "PAFANA",
+        "companyCode": "654321",
+        "minMagazineQuantity": "10",
+        "magazineQuantity": "20"
+	"inUseQuantity": " ",
+	"totalQuantity": " "
+     }
 
 	{
 	"minMagazineQuantity": "10",

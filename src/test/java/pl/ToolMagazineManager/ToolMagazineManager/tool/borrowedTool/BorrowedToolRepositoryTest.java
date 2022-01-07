@@ -75,8 +75,8 @@ class BorrowedToolRepositoryTest {
         long userId = user.getId();
 
         //when
-        List<Tool> list = underTest.findBorrowedToolsByToolIdAndUserId(toolId, userId);
-        boolean expected = list.contains(tool);
+        List<BorrowedTool> list = underTest.findBorrowedToolsByToolIdAndUserId(toolId, userId);
+        boolean expected = list.contains(borrowedTool);
 
         //then
         assertThat(expected).isTrue();

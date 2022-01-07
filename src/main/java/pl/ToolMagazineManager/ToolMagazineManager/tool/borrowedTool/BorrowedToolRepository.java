@@ -17,8 +17,8 @@ public interface BorrowedToolRepository extends JpaRepository<BorrowedTool, Long
     @Query("SELECT e.user FROM BorrowedTool e WHERE e.tool.id = :toolId")
     List<User> findBorrowedToolsUsersByToolId(@Param("toolId") Long toolId);
 
-    @Query("SELECT e.tool FROM BorrowedTool e WHERE e.tool.id = :toolId AND e.user.id = :userId")
-    List<Tool> findBorrowedToolsByToolIdAndUserId(@Param("toolId") Long toolId, @Param("userId") Long userId);
+    @Query("SELECT e FROM BorrowedTool e WHERE e.tool.id = :toolId AND e.user.id = :userId")
+    List<BorrowedTool> findBorrowedToolsByToolIdAndUserId(@Param("toolId") Long toolId, @Param("userId") Long userId);
 
     @Query("SELECT e.tool FROM BorrowedTool e WHERE e.tool.id = :toolId")
     Optional<Tool> findBorrowedToolByToolId (@Param("toolId") Long toolId);

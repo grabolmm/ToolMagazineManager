@@ -17,9 +17,6 @@ public class User {
     private String department;
     private String position;
 
-//    @ManyToMany(mappedBy = "toolUsers")
-//    private List<Tool> borrowedTools = new ArrayList<>();
-
     public User() {
     }
 

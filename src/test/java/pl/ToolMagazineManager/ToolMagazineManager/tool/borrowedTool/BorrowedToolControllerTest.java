@@ -28,10 +28,6 @@ class BorrowedToolControllerTest {
 
     @Mock
     private BorrowedToolService borrowedToolService;
-    @Mock
-    ToolService toolService;
-    @Mock
-    private UserService userService;
 
     private BorrowedToolController underTest;
 
@@ -52,35 +48,23 @@ class BorrowedToolControllerTest {
     }
 
     @Test
-    @Disabled
     void canAddBorrowedTool() {
         //given
+        long toolId = 1;
+        long userId = 1;
         Tool tool = new Tool();
-        tool.setId((long)1);
+        tool.setId(toolId);
         User user = new User();
-        user.setId((long)1);
-        BorrowedTool borrowedTool = new BorrowedTool(user, tool, 1, LocalDate.now().toString());
-        long toolId = borrowedTool.getTool().getId();
-        long userId = borrowedTool.getUser().getId();
-//        given(toolService.findToolById(toolId)).willReturn(Optional.of(tool));
-        given(userService.findUserById(userId)).willReturn(Optional.of(user));
+        user.setId(userId);
 
         //when
-//        assertThat(toolService.findToolById(toolId)).isEqualTo(Optional.of(tool));
-//        assertThat(userService.findUserById(toolId)).isEqualTo(Optional.of(user));
         underTest.addBorrowedTool(toolId, userId, 1);
 
         //then
-//        verify(borrowedToolService).addBorrowedTool(borrowedTool);
-//        verify(toolService).borrowTool(toolId, 1);
-//        ArgumentCaptor<BorrowedTool> toolArgumentCaptor = ArgumentCaptor.forClass(BorrowedTool.class);
-//        verify(borrowedToolService).addBorrowedTool(toolArgumentCaptor.capture());
-//        BorrowedTool capturedTool = toolArgumentCaptor.getValue();
-//        assertThat(capturedTool).isEqualTo(borrowedTool);
+        verify(borrowedToolService).addBorrowedTool(toolId, userId, 1);
     }
 
     @Test
-    @Disabled
     void canGiveBackBorrowedTool() {
         //given
         Tool tool = new Tool();
@@ -96,8 +80,6 @@ class BorrowedToolControllerTest {
 
         //then
         verify(borrowedToolService).giveBackBorrowedTool(toolId, userId, 1);
-//        verify(toolService).giveBackTool(toolId, 1);
-
     }
 
     @Test
@@ -122,6 +104,19 @@ class BorrowedToolControllerTest {
 
         //then
         verify(borrowedToolService).findBorrowedToolsUsersByToolId(toolId);
+    }
+
+    @Test
+    void canFindBorrowedToolsByToolIdAndUserId() {
+        //given
+        long toolId = 1;
+        long userId = 1;
+
+        //when
+        underTest.findBorrowedToolsByToolIdAndUserId(toolId, userId);
+
+        //then
+        verify(borrowedToolService).findBorrowedToolsByToolIdAndUserId(toolId, userId);
     }
 
     @Test
@@ -159,4 +154,6 @@ class BorrowedToolControllerTest {
         //then
         verify(borrowedToolService).findBorrowedToolsByBorrowDate(borrowDate);
     }
+
+
 }

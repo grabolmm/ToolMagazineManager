@@ -1,5 +1,6 @@
 package pl.ToolMagazineManager.ToolMagazineManager.tool.boughtTool;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -21,8 +22,6 @@ class BoughtToolControllerTest {
 
     @Mock
     private BoughtToolService boughtToolService;
-    @Mock
-    private ToolService toolService;
     private BoughtToolController underTest;
 
     @BeforeEach
@@ -42,22 +41,27 @@ class BoughtToolControllerTest {
     }
 
     @Test
-    @Disabled
     void canBuyTool() {
         //given
         Tool tool = new Tool();
+        long toolId = 1;
+        tool.setId(toolId);
         BoughtTool boughtTool = new BoughtTool(tool,
                 5,
                 5.0,
-                "AAA",
-                "BBB");
-        given(toolService.findToolById(tool.getId())).willReturn(Optional.of(tool));
+                "AAA");
 
         //when
-        underTest.buyTool(tool.getId(), 5, 5.0, "AAA");
+        underTest.buyTool(boughtTool.getTool().getId(),
+                boughtTool.getBoughtQuantity(),
+                boughtTool.getPrice(),
+                boughtTool.getInvoice());
 
         //then
-        verify(boughtToolService).addBoughtTool(boughtTool);
+        verify(boughtToolService).addBoughtTool(boughtTool.getTool().getId(),
+                boughtTool.getBoughtQuantity(),
+                boughtTool.getPrice(),
+                boughtTool.getInvoice());
     }
 
     @Test

@@ -7,11 +7,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.ToolMagazineManager.ToolMagazineManager.tool.tool.GroupName;
 import pl.ToolMagazineManager.ToolMagazineManager.tool.tool.Tool;
+import pl.ToolMagazineManager.ToolMagazineManager.tool.tool.ToolService;
 import pl.ToolMagazineManager.ToolMagazineManager.user.User;
+import pl.ToolMagazineManager.ToolMagazineManager.user.UserService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,11 +31,15 @@ class BorrowedToolServiceTest {
 
     @Mock
     private BorrowedToolRepository borrowedToolRepository;
+    @Mock
+    private ToolService toolService;
+    @Mock
+    private UserService userService;
     private BorrowedToolService underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new BorrowedToolService(borrowedToolRepository);
+        underTest = new BorrowedToolService(borrowedToolRepository, toolService, userService);
     }
 
     @Test
@@ -43,23 +51,45 @@ class BorrowedToolServiceTest {
 
         //then
         verify(borrowedToolRepository).findAll();
-
     }
 
     @Test
-    @Disabled
     void canAddBorrowedTool() {
         //given
-//        BorrowedTool borrowedTool = new BorrowedTool(new User(), new Tool(), 1, LocalDate.now().toString());
+        User user = new User(
+                "Mariusz",
+                "Graczyk",
+                "graczyk@gmail.com",
+                "503502501",
+                "R&D",
+                "mechanical designer");
+
+        long userId = 1;
+        user.setId(userId);
+
+        Tool tool = new Tool(GroupName.MILLING_CUTTER_SOLID_CARBIDE,
+                "10",
+                "ceratizit",
+                "12345",
+                5);
+
+        long toolId = 1;
+        tool.setId(toolId);
+        BorrowedTool borrowedTool = new BorrowedTool(user, tool, 1, LocalDate.now().toString());
+        given(toolService.findToolById(toolId)).willReturn(Optional.of(tool));
+        given(userService.findUserById(userId)).willReturn(Optional.of(user));
 
         //when
-//        underTest.addBorrowedTool(borrowedTool);
+        underTest.addBorrowedTool(toolId, userId, 1);
 
         //then
-//        ArgumentCaptor<BorrowedTool> borrowedToolArgumentCaptor = ArgumentCaptor.forClass(BorrowedTool.class);
-//        verify(borrowedToolRepository).save(borrowedToolArgumentCaptor.capture());
-//        BorrowedTool capturedBorrowedTool = borrowedToolArgumentCaptor.getValue();
-//        assertThat(capturedBorrowedTool).isEqualTo(borrowedTool);
+        ArgumentCaptor<BorrowedTool> borrowedToolArgumentCaptor = ArgumentCaptor.forClass(BorrowedTool.class);
+        verify(borrowedToolRepository).save(borrowedToolArgumentCaptor.capture());
+        BorrowedTool capturedBorrowedTool = borrowedToolArgumentCaptor.getValue();
+
+        assertThat(capturedBorrowedTool.getTool().getId()).isEqualTo(borrowedTool.getTool().getId());
+        assertThat(capturedBorrowedTool.getUser().getId()).isEqualTo(borrowedTool.getUser().getId());
+        assertThat(capturedBorrowedTool.getBorrowedQuantity()).isEqualTo(borrowedTool.getBorrowedQuantity());
     }
 
     @Test
@@ -75,8 +105,8 @@ class BorrowedToolServiceTest {
 
         int giveBackQuantity = 1;
         BorrowedTool borrowedTool = new BorrowedTool(user, tool, 1, LocalDate.now().toString());
-        List<Tool> toolList = new ArrayList<>();
-        toolList.add(tool);
+        List<BorrowedTool> toolList = new ArrayList<>();
+        toolList.add(borrowedTool);
         given(borrowedToolRepository.findBorrowedToolUserByUserId(user.getId())).willReturn(Optional.of(user));
         given(borrowedToolRepository.findBorrowedToolByToolId(tool.getId())).willReturn(Optional.of(tool));
         given(borrowedToolRepository.findBorrowedToolsByToolIdAndUserId(tool.getId(), user.getId())).willReturn(toolList);
@@ -85,7 +115,7 @@ class BorrowedToolServiceTest {
         underTest.giveBackBorrowedTool(tool.getId(), user.getId(), giveBackQuantity);
 
         //then
-        verify(borrowedToolRepository).deleteById(tool.getId());
+        verify(borrowedToolRepository).deleteById(borrowedTool.getId());
     }
 
     @Test
@@ -101,8 +131,8 @@ class BorrowedToolServiceTest {
 
         int giveBackQuantity = 2;
         BorrowedTool borrowedTool = new BorrowedTool(user, tool, 1, LocalDate.now().toString());
-        List<Tool> toolList = new ArrayList<>();
-        toolList.add(tool);
+        List<BorrowedTool> toolList = new ArrayList<>();
+        toolList.add(borrowedTool);
         given(borrowedToolRepository.findBorrowedToolUserByUserId(user.getId())).willReturn(Optional.of(user));
         given(borrowedToolRepository.findBorrowedToolByToolId(tool.getId())).willReturn(Optional.of(tool));
         given(borrowedToolRepository.findBorrowedToolsByToolIdAndUserId(tool.getId(), user.getId())).willReturn(toolList);
@@ -179,19 +209,26 @@ class BorrowedToolServiceTest {
     }
 
     @Test
-    @Disabled
-    void canFindBorrowedToolsByToolIdAndUserId() {
-    }
+    void willThrownWhenNoActionOnDate() {
+        //given
+        long toolId = 1;
+        Tool tool = new Tool();
+        tool.setId(toolId);
 
-    @Test
-    @Disabled
-    void canFindBorrowedToolByToolId() {
-    }
+        long userId = 1;
+        User user = new User();
+        user.setId(userId);
 
-    @Test
-    @Disabled
-    void canFindBorrowedToolUserByUserId() {
-    }
+        BorrowedTool borrowedTool = new BorrowedTool(user, tool, 1, LocalDate.now().toString());
+        List<Tool> toolList = new ArrayList<>();
+        toolList.add(tool);
+        String borrowDate = borrowedTool.getBorrowDate();
+        given(borrowedToolRepository.findBorrowedToolsByBorrowDate(borrowDate)).willReturn(Collections.emptyList());
 
+        //when
+        //then
+        assertThatThrownBy(() -> underTest.findBorrowedToolsByBorrowDate(borrowDate)).isInstanceOf(IllegalStateException.class).
+                hasMessageContaining("there was no actions on date: " + borrowDate);
+    }
 
 }

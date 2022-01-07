@@ -16,14 +16,12 @@ public class BorrowedTool {
     @Column (nullable = false, updatable = false)
     private Long id;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-    @OneToOne
-//    @JoinColumn (name = "user_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn (name = "user_id")
     private User user;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-    @OneToOne
-//    @JoinColumn (name = "tool_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn (name = "tool_id")
     private Tool tool;
 
     @Transient

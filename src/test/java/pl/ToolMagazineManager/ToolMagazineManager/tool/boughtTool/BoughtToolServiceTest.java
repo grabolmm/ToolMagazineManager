@@ -1,34 +1,41 @@
 package pl.ToolMagazineManager.ToolMagazineManager.tool.boughtTool;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.ToolMagazineManager.ToolMagazineManager.tool.tool.GroupName;
 import pl.ToolMagazineManager.ToolMagazineManager.tool.tool.Tool;
+import pl.ToolMagazineManager.ToolMagazineManager.tool.tool.ToolService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class BoughtToolServiceTest {
 
     @Mock
     private BoughtToolRepository boughtToolRepository;
+    @Mock
+    private ToolService toolService;
     private BoughtToolService underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new BoughtToolService(boughtToolRepository);
+        underTest = new BoughtToolService(boughtToolRepository, toolService);
     }
 
     @Test
@@ -45,16 +52,31 @@ class BoughtToolServiceTest {
     @Test
     void canAddBoughtTool() {
         //given
-        BoughtTool boughtTool = new BoughtTool();
+        GroupName groupName = GroupName.MILLING_CUTTER_SOLID_CARBIDE;
+
+        Tool tool = new Tool(groupName,
+                "10",
+                "ceratizit",
+                "12345",
+                5);
+
+        long toolId = 1;
+        tool.setId(toolId);
+        BoughtTool boughtTool = new BoughtTool(tool, 5, 100.0, "AAA");
+        given(toolService.findToolById(toolId)).willReturn(Optional.of(tool));
 
         //when
-        underTest.addBoughtTool(boughtTool);
+        underTest.addBoughtTool(toolId, boughtTool.getBoughtQuantity(), boughtTool.getPrice(), boughtTool.getInvoice());
 
         //then
         ArgumentCaptor<BoughtTool> boughtToolArgumentCaptor = ArgumentCaptor.forClass(BoughtTool.class);
         verify(boughtToolRepository).save(boughtToolArgumentCaptor.capture());
         BoughtTool capturedBoughtTool = boughtToolArgumentCaptor.getValue();
-        assertThat(capturedBoughtTool).isEqualTo(boughtTool);
+
+        assertThat(capturedBoughtTool.getTool().getId()).isEqualTo(boughtTool.getTool().getId());
+        assertThat(capturedBoughtTool.getBoughtQuantity()).isEqualTo(boughtTool.getBoughtQuantity());
+        assertThat(capturedBoughtTool.getPrice()).isEqualTo(boughtTool.getPrice());
+        assertThat(capturedBoughtTool.getInvoice()).isEqualTo(boughtTool.getInvoice());
     }
 
     @Test
@@ -96,7 +118,7 @@ class BoughtToolServiceTest {
         //given
         Tool tool = new Tool();
         String invoice = "AAABBBCCC";
-        BoughtTool boughtTool = new BoughtTool(tool, 5, 5.0, invoice, LocalDate.now().toString());
+        BoughtTool boughtTool = new BoughtTool(tool, 5, 5.0, invoice);
         List<Tool> toolList = new ArrayList<>();
         toolList.add(boughtTool.getTool());
         given(boughtToolRepository.findBoughtToolsByInvoice(invoice)).willReturn(toolList);
@@ -113,7 +135,7 @@ class BoughtToolServiceTest {
         //given
         Tool tool = new Tool();
         String invoice = "AAABBBCCC";
-        BoughtTool boughtTool = new BoughtTool(tool, 5, 5.0, invoice, LocalDate.now().toString());
+        BoughtTool boughtTool = new BoughtTool(tool, 5, 5.0, invoice);
         List<Tool> toolList = new ArrayList<>();
         toolList.add(boughtTool.getTool());
         given(boughtToolRepository.findBoughtToolsByInvoice(invoice)).willReturn(Collections.emptyList());
@@ -129,7 +151,7 @@ class BoughtToolServiceTest {
         //given
         Tool tool = new Tool();
         String boughtDate = LocalDate.now().toString();
-        BoughtTool boughtTool = new BoughtTool(tool, 5, 5.0, "invoice", boughtDate);
+        BoughtTool boughtTool = new BoughtTool(tool, 5, 5.0, "invoice");
         List<Tool> toolList = new ArrayList<>();
         toolList.add(boughtTool.getTool());
         given(boughtToolRepository.findBoughtToolsByBoughtDate(boughtDate)).willReturn(toolList);
@@ -146,7 +168,7 @@ class BoughtToolServiceTest {
         //given
         Tool tool = new Tool();
         String boughtDate = LocalDate.now().toString();
-        BoughtTool boughtTool = new BoughtTool(tool, 5, 5.0, "invoice", boughtDate);
+        BoughtTool boughtTool = new BoughtTool(tool, 5, 5.0, "invoice");
         List<Tool> toolList = new ArrayList<>();
         toolList.add(boughtTool.getTool());
         given(boughtToolRepository.findBoughtToolsByBoughtDate(boughtDate)).willReturn(Collections.emptyList());

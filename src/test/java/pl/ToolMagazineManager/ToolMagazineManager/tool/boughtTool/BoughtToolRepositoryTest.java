@@ -31,7 +31,8 @@ class BoughtToolRepositoryTest {
                 "12345",
                 5);
 
-        boughtTool = new BoughtTool(tool, 5, 5.0, "AAABBB", LocalDate.now().toString());
+        boughtTool = new BoughtTool(tool, 5, 5.0, "AAABBB");
+        boughtTool.setBoughtDate(LocalDate.now().toString());
         underTest.save(boughtTool);
     }
 

@@ -12,21 +12,22 @@ import pl.ToolMagazineManager.ToolMagazineManager.user.UserService;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BorrowedToolService {
 
     private final BorrowedToolRepository borrowedToolRepository;
-
-    @Autowired
     private ToolService toolService;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
-    public BorrowedToolService(BorrowedToolRepository borrowedToolRepository) {
+    public BorrowedToolService(BorrowedToolRepository borrowedToolRepository,
+                               ToolService toolService,
+                               UserService userService) {
         this.borrowedToolRepository = borrowedToolRepository;
+        this.toolService = toolService;
+        this.userService = userService;
     }
 
     public List<BorrowedTool> getBorrowedTools(){
@@ -38,21 +39,22 @@ public class BorrowedToolService {
         Tool tool = toolService.findToolById(toolId).orElseThrow(() -> new IllegalStateException (
                 "tool with id " + toolId + " does not exist"));
         User user = userService.findUserById(userId).orElseThrow(() -> new IllegalStateException (
-                "tool with id " + userId + " does not exist"));
+                "user with id " + userId + " does not exist"));
 
         for (int saveBorrowQuantity = 0; saveBorrowQuantity < borrowQuantity; saveBorrowQuantity++){
-            BorrowedTool borrowedToolToSave = new BorrowedTool(user, tool, borrowQuantity, borrowDate);
-            borrowedToolRepository.save(borrowedToolToSave);
+            BorrowedTool borrowedTool = new BorrowedTool(user, tool, borrowQuantity, borrowDate);
+            borrowedToolRepository.save(borrowedTool);
         }
         toolService.borrowTool(toolId, borrowQuantity);
     }
 
     public void giveBackBorrowedTool (Long toolId, Long userId, int giveBackQuantity){
-        List<Tool> usersBorrowedTool = findBorrowedToolsByToolIdAndUserId(toolId, userId);
+        List<BorrowedTool> usersBorrowedTool = findBorrowedToolsByToolIdAndUserId(toolId, userId);
         if (usersBorrowedTool.size() >= giveBackQuantity){
+            toolService.giveBackTool(toolId, giveBackQuantity);
             for(int k = 0; k < giveBackQuantity; k++){
-                Tool toolToGiveBack = usersBorrowedTool.get(k);
-                borrowedToolRepository.deleteById(toolToGiveBack.getId());
+                BorrowedTool borrowedToolToGiveBack = usersBorrowedTool.get(k);
+                borrowedToolRepository.deleteById(borrowedToolToGiveBack.getId());
             }
         } else throw new IllegalStateException("user do not has enough borrowed tools to give it back");
     }
@@ -67,7 +69,7 @@ public class BorrowedToolService {
         return borrowedToolRepository.findBorrowedToolsUsersByToolId(toolId);
     }
 
-    public List<Tool> findBorrowedToolsByToolIdAndUserId(Long toolId, Long userId){
+    public List<BorrowedTool> findBorrowedToolsByToolIdAndUserId(Long toolId, Long userId){
         findBorrowedToolUserByUserId(userId);
         findBorrowedToolByToolId(toolId);
         return borrowedToolRepository.findBorrowedToolsByToolIdAndUserId(toolId, userId);
@@ -88,9 +90,5 @@ public class BorrowedToolService {
         if (borrowedToolsList.isEmpty()){
             throw new IllegalStateException("there was no actions on date: " + borrowDate);
         } else return borrowedToolsList;
-    }
-
-    public void testMethod (){
-
     }
 }
